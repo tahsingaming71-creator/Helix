@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>(function(){var l=matchMedia('(pointer:coarse)').matches||innerWidth<900||(navigator.deviceMemory&&navigator.deviceMemory<=4);if(l)document.documentElement.classList.add('lite')})()</script>
+<title>Helix AI — Your personal AI assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050505;--s1:#0c0c0e;--line:rgba(201,180,138,.14);--line2:rgba(201,180,138,.32);--gold:#c9b48a;--gl:#e8d9b5;--fg:#f5f5f2;--mut:#a6a6ab;--faint:#7a7a80;--ease:cubic-bezier(.16,.8,.24,1);--d:'Cormorant Garamond','Times New Roman',serif;--b:'Inter','Segoe UI',sans-serif;--m:'IBM Plex Mono','Courier New',monospace;
+--glass:linear-gradient(145deg,rgba(255,255,255,.1),rgba(255,255,255,.025) 55%,rgba(255,255,255,.06));--gb:rgba(255,255,255,.13);--hi:inset 0 1px 0 rgba(255,255,255,.28),inset 0 -1px 0 rgba(255,255,255,.04),inset 0 0 22px rgba(255,255,255,.03);--sh:0 22px 60px -22px rgba(0,0,0,.85)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:var(--bg)}html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{background:var(--bg);color:var(--fg);font:16px/1.6 var(--b);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:999;pointer-events:none;opacity:.04;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+a{color:inherit;text-decoration:none}ul{list-style:none}button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}svg{display:block;max-width:100%}
+::selection{background:var(--gold);color:var(--bg)}:focus-visible{outline:1.5px solid var(--gold);outline-offset:3px}
+h1,h2,h3,h4{font-family:var(--d);font-weight:500;letter-spacing:-.015em}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}section{position:relative}
+.eyebrow{font:11.5px var(--m);letter-spacing:.2em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;justify-content:center;gap:12px}
+.eyebrow:before,.eyebrow:after{content:"";width:30px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}.eyebrow:after{transform:scaleX(-1)}
+.shiny{background:linear-gradient(110deg,#a08a5c 35%,#fff6df 50%,#a08a5c 65%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 3.2s linear infinite}
+@keyframes shine{from{background-position:150% 0}to{background-position:-50% 0}}
+/* glass */
+.gc{position:relative;background:var(--glass);border:1px solid var(--gb);border-radius:28px;-webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%);box-shadow:var(--hi),var(--sh);overflow:hidden;--x:50%;--y:50%;transition:translate .55s var(--ease),box-shadow .5s,border-color .4s}
+.gc:before{content:"";position:absolute;inset:0;background:radial-gradient(380px circle at var(--x) var(--y),rgba(232,217,181,.14),transparent 70%);opacity:0;transition:opacity .4s;pointer-events:none}
+.gc:after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:radial-gradient(240px circle at var(--x) var(--y),rgba(255,236,190,.85),transparent 65%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .4s;pointer-events:none}
+.gc:hover{translate:0 -8px;box-shadow:var(--hi),0 34px 70px -24px rgba(0,0,0,.9),0 0 60px -26px rgba(201,180,138,.5)}.gc:hover:before,.gc:hover:after{opacity:1}
+.gc>*:not(.orb):not(.th):not(.x){position:relative;z-index:1}
+.orb{position:absolute;border-radius:50%;pointer-events:none;background:radial-gradient(circle at 30% 24%,rgba(255,255,255,.6),rgba(255,255,255,.1) 26%,rgba(201,180,138,.2) 62%,rgba(201,180,138,.03));box-shadow:inset -10px -14px 28px rgba(0,0,0,.4),inset 8px 10px 20px rgba(255,255,255,.16),0 24px 60px rgba(0,0,0,.55);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+.orb.c{background:radial-gradient(circle at 30% 24%,rgba(255,255,255,.55),rgba(190,205,230,.1) 40%,rgba(120,140,180,.03))}
+/* liquid glass buttons */
+.gl{--mx:50%;--my:50%;position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:16px 32px;border-radius:999px;font:500 14px var(--b);letter-spacing:.02em;color:var(--fg);white-space:nowrap;overflow:hidden;background:linear-gradient(145deg,rgba(255,255,255,.15),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.2);-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%);box-shadow:inset 0 1px 1px rgba(255,255,255,.45),inset 0 -10px 18px rgba(255,255,255,.04),0 12px 30px -12px rgba(0,0,0,.8);transition:translate .45s var(--ease),box-shadow .45s,border-color .4s}
+.gl:before{content:"";position:absolute;inset:0;background:radial-gradient(140px circle at var(--mx) var(--my),rgba(255,240,205,.34),transparent 65%);opacity:0;transition:opacity .35s}
+.gl:after{content:"";position:absolute;left:12%;right:12%;top:1px;height:44%;border-radius:999px;background:linear-gradient(rgba(255,255,255,.34),transparent);opacity:.5;pointer-events:none}
+.gl>span{position:relative;z-index:2}.gl:hover{translate:0 -3px;border-color:rgba(255,255,255,.4);box-shadow:inset 0 1px 1px rgba(255,255,255,.6),inset 0 -10px 18px rgba(255,255,255,.06),0 18px 40px -12px rgba(201,180,138,.5)}.gl:hover:before{opacity:1}
+.gl.gold{background:linear-gradient(145deg,rgba(239,227,198,.55),rgba(201,180,138,.24));border-color:rgba(239,227,198,.55);color:#fffaf0;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),inset 0 -10px 18px rgba(201,180,138,.12),0 14px 40px -12px rgba(201,180,138,.55)}
+.ar{display:inline-block;transition:transform .45s var(--ease)}.gl:hover .ar{transform:translateX(5px)}
+.sm{padding:10px 22px;font-size:13px}.blk{width:100%}
+/* header */
+header{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:0;right:0;z-index:500;display:flex;justify-content:center;padding:0 14px;pointer-events:none}
+.nav{pointer-events:auto;width:min(980px,100%);display:flex;align-items:center;justify-content:space-between;padding:9px 10px 9px 24px;border-radius:999px;transition:width .6s var(--ease),background .4s}
+header.sc .nav{width:min(760px,100%);background:linear-gradient(145deg,rgba(20,20,22,.7),rgba(255,255,255,.03))}.nav:hover{translate:none}
+.logo{display:flex;align-items:center;gap:9px;font:500 23px var(--d)}.logo svg{width:24px;height:24px}.logo path{stroke:var(--gold)}
+.links{display:flex;gap:30px}.links a{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);position:relative;padding:6px 0;transition:color .25s}
+.links a:after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:right;transition:transform .35s var(--ease)}.links a:hover,.links a.on{color:var(--fg)}.links a:hover:after,.links a.on:after{transform:scaleX(1);transform-origin:left}
+.cta{display:flex;align-items:center;gap:10px}
+.tog{display:none;flex-direction:column;gap:5px;width:26px;margin:0 12px}.tog span{height:1.5px;background:var(--fg)}
+.mp{position:fixed;top:calc(84px + env(safe-area-inset-top,0px));left:14px;right:14px;z-index:400;padding:26px;display:flex;flex-direction:column;gap:20px;opacity:0;visibility:hidden;transform:translateY(-10px);transition:.35s}.mp.open{opacity:1;visibility:visible;transform:none}.mp a{font:30px var(--d)}
+/* hero */
+#hero{min-height:100vh;display:grid;place-items:center;text-align:center;padding:150px 0 110px;overflow:hidden}
+.hxb{position:absolute;inset:0;display:flex;justify-content:center;align-items:center;opacity:.5;-webkit-mask:radial-gradient(closest-side,#000 35%,transparent);mask:radial-gradient(closest-side,#000 35%,transparent);filter:drop-shadow(0 0 28px rgba(201,180,138,.18))}.hxb svg{height:118%;width:auto;overflow:visible}
+.hc{position:relative;z-index:3;max-width:900px}
+h1{font-size:clamp(2.8rem,6.4vw,5.6rem);line-height:.98;margin:26px 0 28px}h1 .l{display:block}.it,.it .w i{font-style:italic;color:#e6d6b0}
+.w{display:inline-block;overflow:hidden;vertical-align:top;padding:0 .04em .1em}.w i{display:inline-block;font-style:normal}
+.lead{font-size:18px;line-height:1.7;font-weight:300;color:var(--mut);max-width:560px;margin:0 auto 38px}
+.acts{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:20px}.note{font:12px var(--m);letter-spacing:.06em;color:var(--faint)}
+#fls{position:absolute;inset:0;z-index:2;pointer-events:none}.fl{position:absolute;pointer-events:auto}
+.chip{display:flex;align-items:center;gap:9px;padding:11px 20px 11px 16px;border-radius:999px;font-size:13px;cursor:pointer}.chip svg{width:17px;height:17px;stroke:var(--gold)}
+.fc{width:232px;padding:18px 20px;text-align:left;font:12px/1.55 var(--m);color:var(--mut);border-radius:22px}.fc b{display:block;font:italic 500 17px var(--d);color:var(--fg);margin-bottom:8px}
+.fc pre{font:11px/1.6 var(--m);white-space:pre;color:#cfcfd2}.dots{display:flex;gap:5px;margin-bottom:10px}.dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2)}
+.bar{height:3px;border-radius:9px;background:rgba(255,255,255,.1);margin-top:10px;overflow:hidden}.bar i{display:block;height:100%;width:72%;background:linear-gradient(90deg,#8f7c55,#efe3c6)}
+.big{font:500 34px var(--d);color:var(--gl);line-height:1}.chr{display:none}
+.scr{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:10px;font:10px var(--m);letter-spacing:.3em;text-transform:uppercase;color:var(--faint)}
+.scr i{width:1px;height:46px;background:linear-gradient(var(--gold),transparent);transform-origin:top;animation:sl 2.4s var(--ease) infinite}@keyframes sl{0%{transform:scaleY(0)}55%{transform:scaleY(1);opacity:1}100%{transform:scaleY(1);opacity:0}}
+.band{border-block:1px solid var(--line);padding:36px 0;overflow:hidden;white-space:nowrap}
+.bt{display:inline-flex;align-items:center;font:italic 400 clamp(3.2rem,8vw,7rem)/1 var(--d);color:transparent;-webkit-text-stroke:1px rgba(201,180,138,.55);will-change:transform}.bt em{color:var(--gold);-webkit-text-stroke:0;font-style:normal;font-size:.36em;margin:0 .9em}
+/* sections */
+.pad{padding:140px 0;overflow:hidden}
+.head{max-width:700px;margin:0 auto 72px;text-align:center}.head h2{font-size:clamp(2.3rem,4.6vw,4rem);line-height:1.04;margin:20px 0}.head p{color:var(--mut);max-width:540px;margin:0 auto;font-weight:300}
+.bento{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}.c2{grid-column:span 2}.c3{grid-column:span 3}.c4{grid-column:span 4}
+.bc{padding:34px;min-height:270px;display:flex;flex-direction:column;justify-content:space-between}.bc h3{font-size:30px;margin-bottom:10px}.bc p{color:var(--mut);font-size:15px;line-height:1.7;max-width:430px}
+.ct{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:40px}.ct .ic{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.14);box-shadow:var(--hi)}.ct svg{width:23px;height:23px;stroke:var(--gold)}.ct span{font:italic 400 20px var(--d);color:var(--gold)}
+.dash{border-style:dashed;background:transparent}
+.dm{display:grid;grid-template-columns:250px 1fr;gap:18px;align-items:start}
+.seg{padding:8px;display:flex;flex-direction:column;gap:4px;border-radius:26px}.th{position:absolute;left:0;top:0;z-index:0;border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.2),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.22);box-shadow:var(--hi),0 8px 20px -8px rgba(201,180,138,.4)}
+.tab{display:flex;align-items:center;gap:12px;padding:15px 18px;border-radius:18px;font-size:14.5px;color:var(--mut);text-align:left;transition:color .3s}.tab span{font:italic 17px var(--d);color:var(--gold)}.tab.on,.tab:hover{color:var(--fg)}
+.win{padding:34px;min-height:340px;font:14px/1.75 var(--m)}.pane{display:none}.pane.on{display:block}
+.pr{color:var(--fg);margin-bottom:22px}.pr b{color:var(--gold);margin-right:10px;font-weight:400}
+.out .ln{display:block;white-space:pre-wrap;color:var(--mut);opacity:0}.out .ln.hl{color:var(--gl)}
+.cur{display:inline-block;width:8px;height:1em;background:var(--gold);vertical-align:-2px;animation:bl 1s steps(1) infinite}@keyframes bl{50%{opacity:0}}
+#how{padding:120px 0}.hw{margin:0 auto}
+.trk{display:flex;gap:22px;width:max-content;padding:0 max(32px,calc((100vw - 1180px)/2 + 32px));will-change:transform}
+.stp{width:min(440px,78vw);min-height:340px;padding:40px;display:flex;flex-direction:column;justify-content:space-between}.stp .n{font:italic 400 110px/.9 var(--d);color:transparent;-webkit-text-stroke:1px rgba(201,180,138,.6)}.stp h3{font-size:32px;margin-bottom:10px}.stp p{color:var(--mut);max-width:340px;font-weight:300}
+.hp{height:1px;background:var(--line2);margin:46px auto 0;width:min(1116px,calc(100% - 64px))}.hp i{display:block;height:100%;background:var(--gold);transform:scaleX(0);transform-origin:left}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.stc{padding:46px 34px;min-height:230px}
+.sn{font:italic 400 clamp(3.4rem,6vw,5.4rem)/1 var(--d);color:#ecdfc0}.sl{color:var(--mut);font-size:14px;margin-top:14px}
+.mq{overflow:hidden;mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);padding:20px 0}.mt{display:flex;gap:18px;width:max-content}
+.tc{width:390px;padding:32px;white-space:normal}.tc q{display:block;font:italic 24px/1.35 var(--d);quotes:none;margin-bottom:24px}.tc p{font-size:13px;color:var(--faint)}.tc strong{color:var(--fg);font-weight:500}
+.ptog{display:flex;align-items:center;justify-content:center;gap:14px;margin:-30px 0 54px;font-size:14px;color:var(--faint)}.ptog .on{color:var(--fg)}
+.sw{width:54px;height:30px;border-radius:99px;position:relative;background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.2);box-shadow:var(--hi)}.sw:after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff6df,#c9b48a);box-shadow:0 4px 10px rgba(0,0,0,.5);transition:transform .45s var(--ease)}.sw[aria-checked=true]:after{transform:translateX(24px)}
+.badge{font:11px var(--m);color:var(--gold);border:1px solid rgba(201,180,138,.4);padding:3px 11px;border-radius:99px}
+.pg{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;align-items:stretch}.pc{display:flex;flex-direction:column;padding:34px 28px}.pc h3{font-size:28px}
+.ft{scale:1.04;border-color:rgba(201,180,138,.7);box-shadow:var(--hi),0 0 90px -24px rgba(201,180,138,.35),var(--sh)}
+.tag{font:10.5px var(--m);letter-spacing:.1em;background:var(--gold);color:var(--bg);padding:3px 11px;border-radius:99px;align-self:flex-start;margin-bottom:14px}
+.pd{font-size:14px;color:var(--mut);margin:6px 0 22px;min-height:44px}.pa{font:500 48px var(--d);margin-bottom:22px;line-height:1}.pa small{font:12px var(--m);color:var(--faint);margin-left:6px}
+.pf{flex:1;margin-bottom:28px;font-size:14px;color:var(--mut)}.pf li{padding:8px 0;border-top:1px solid var(--line)}
+.fqs{display:flex;flex-direction:column;gap:14px;max-width:820px;margin:0 auto}.fq{border-radius:22px}.fq button{width:100%;display:flex;justify-content:space-between;gap:20px;padding:26px 30px;font:500 23px var(--d);text-align:left}.fq .pl{font:300 26px var(--m);color:var(--gold);transition:transform .4s var(--ease)}.fq.o .pl{transform:rotate(45deg)}
+.fa{height:0;overflow:hidden}.fa p{padding:0 30px 28px;color:var(--mut);max-width:640px}
+.fin{padding:150px 0}.panel{max-width:960px;margin:0 auto;padding:90px 40px;text-align:center;border-radius:44px}.panel h2{font-size:clamp(3rem,8vw,6.4rem);line-height:1;font-weight:400}.panel h2 .w i{font-style:italic}.panel p{color:var(--mut);margin:20px 0 36px}
+footer{border-top:1px solid var(--line);padding:70px 0 40px;font-size:14px;color:var(--mut)}
+.ft1{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:32px;margin-bottom:56px}.ft1 h4{font:500 18px var(--d);color:var(--fg);margin-bottom:14px}.ft1 a{display:block;padding:4px 0;transition:color .25s}.ft1 a:hover{color:var(--gl)}
+.mega{font:italic 500 clamp(6rem,24vw,20rem)/.8 var(--d);text-align:center;background:linear-gradient(to bottom,rgba(233,220,192,.3),transparent 85%);-webkit-background-clip:text;background-clip:text;color:transparent;margin:0 0 36px;user-select:none;overflow:hidden;padding-bottom:.08em}
+.fb{display:flex;justify-content:space-between;font:12px var(--m);color:var(--faint)}
+/* fx */
+.amb{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}.amb i{position:absolute;border-radius:50%}
+.amb i:nth-child(1){width:60vw;height:60vw;left:-15vw;top:5vh;background:radial-gradient(circle,rgba(201,180,138,.13),transparent 65%)}.amb i:nth-child(2){width:50vw;height:50vw;right:-12vw;top:40vh;background:radial-gradient(circle,rgba(150,175,215,.08),transparent 65%)}.amb i:nth-child(3){width:42vw;height:42vw;left:30vw;top:85vh;background:radial-gradient(circle,rgba(201,180,138,.1),transparent 65%)}
+.prog{position:fixed;top:0;left:0;right:0;height:2px;z-index:900;background:linear-gradient(90deg,#8f7c55,#efe3c6);transform:scaleX(0);transform-origin:left}
+.cd,.cr{position:fixed;left:0;top:0;pointer-events:none;z-index:1000;border-radius:50%}.cd{width:6px;height:6px;margin:-3px 0 0 -3px;background:var(--gold)}.cr{width:38px;height:38px;margin:-19px 0 0 -19px;border:1px solid rgba(201,180,138,.55)}
+@media(pointer:fine){body.cc,body.cc *{cursor:none!important}}
+.pl{position:fixed;inset:0;z-index:2000;background:#050505;display:grid;place-items:center;text-align:center;animation:plf .01s 8s forwards}@keyframes plf{to{visibility:hidden}}
+.pt{font:italic 500 clamp(3.4rem,11vw,7rem)/1 var(--d)}.pb{width:min(260px,60vw);height:1px;background:var(--line2);margin:22px auto 14px;overflow:hidden}.pb i{display:block;height:100%;background:var(--gold);transform:scaleX(0);transform-origin:left}#pn{font:12px var(--m);letter-spacing:.3em;color:var(--faint)}
+@media(max-width:1239px){.fc{display:none}}
+@media(max-width:960px){.links,.cta .gl{display:none}.tog{display:flex}.bento,.stats,.pg{grid-template-columns:repeat(2,1fr)}.c2,.c3,.c4{grid-column:span 2}.c2{grid-column:span 1}.ft1{grid-template-columns:1fr 1fr}.dm{grid-template-columns:1fr}.seg{flex-direction:row;overflow-x:auto}.tab{flex:none}.scr{display:none}}
+@media(max-width:900px){.fl{display:none}.chr{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:30px}#how{padding:100px 0}.trk{width:auto;flex-direction:column;padding:0 20px}.stp{width:auto}.hp{display:none}}
+@media(max-width:620px){.wrap{padding:0 20px}.bento,.stats,.pg{grid-template-columns:1fr}.c2,.c3,.c4{grid-column:span 1}.pad{padding:96px 0}.tc{width:300px}.win{padding:22px}.ft{scale:1}.panel{padding:64px 22px}}
+@media(min-width:901px){#how{min-height:100vh;display:flex;flex-direction:column;justify-content:center}}
+section{scroll-margin-top:80px}.mt{will-change:transform}
+.gl>i.rp{position:absolute;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:radial-gradient(circle,rgba(255,240,205,.6),transparent 70%);transform:scale(0);animation:rp .7s var(--ease) forwards;pointer-events:none;z-index:1}@keyframes rp{to{transform:scale(20);opacity:0}}
+.pk{font:11.5px var(--m);letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.pers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.pcd{padding:34px 30px;display:flex;flex-direction:column;gap:20px}.pcd h3{font-size:32px;line-height:1.05}
+.pq{font:13px/1.75 var(--m);color:var(--mut);border-left:1px solid var(--gold);padding-left:14px}
+.flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.flow .chip{padding:8px 14px 8px 11px;font-size:12.5px}.flow .chip svg{width:15px;height:15px}.flow>i{color:var(--gold);font-style:normal;font-size:12px}
+.rs{font:italic 19px var(--d);color:var(--gl)}
+.cmp{max-width:900px;margin:0 auto;padding:6px 0}.cmpr{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:12px;align-items:center;padding:20px 32px;border-top:1px solid var(--line);font-size:14.5px;color:var(--mut)}
+.cmpr.h{border:0;font:italic 500 24px var(--d);padding-top:28px;color:var(--faint)}.cmpr.h span:nth-child(2){color:var(--gl)}.cmpr b{font-weight:500;color:var(--fg)}.cmpr em{font-style:normal;margin-right:6px}.cmpr .y{color:var(--gold)}.cmpr .n{color:var(--faint)}
+.ov{position:fixed;inset:0;z-index:800;background:rgba(5,5,5,.82);opacity:0;visibility:hidden;transition:opacity .4s var(--ease),visibility .4s}.ov.open{opacity:1;visibility:visible}
+html:not(.lite) .ov{-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.ovb{height:100%;overflow:auto;overscroll-behavior:contain;padding:calc(76px + env(safe-area-inset-top,0px)) 16px 60px;-webkit-overflow-scrolling:touch}
+.ovp{max-width:760px;margin:0 auto;padding:48px 44px;transform:translateY(26px) scale(.98);transition:transform .6s var(--ease),translate .55s var(--ease),box-shadow .5s}.ov.open .ovp{transform:none}.ovp:hover{translate:none}
+.ovp>.x{position:absolute;top:16px;right:16px;z-index:3;width:42px;height:42px;border-radius:50%;font:300 26px/1 var(--m);display:grid;place-items:center;background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.18);box-shadow:var(--hi)}
+.ovp h2{font-size:clamp(2.2rem,5vw,3.3rem);line-height:1.04;margin:14px 0}.ovp h3{font-size:25px;margin:30px 0 8px}.ovp p,.ovp li{color:var(--mut)}.ovp .pk+h2{margin-top:12px}.ovp a:not(.gl){color:var(--gl);border-bottom:1px solid var(--line2)}
+.smp{font:11px var(--m);color:var(--faint);margin-top:34px}.alt{margin-top:22px;font-size:14px}
+.fm{display:grid;gap:16px;margin-top:26px}.fm label{display:grid;gap:8px;font:12px var(--m);letter-spacing:.06em;color:var(--faint)}
+.fm input,.fm select,.fm textarea{width:100%;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid var(--gb);color:var(--fg);font:16px var(--b);outline:0;transition:border-color .3s,background .3s}.fm select option{background:#111}
+.fm input:focus,.fm select:focus,.fm textarea:focus{border-color:var(--gold);background:rgba(255,255,255,.08)}.fm textarea{min-height:130px;resize:vertical}
+.vl li,.role,.stl{padding:16px 0;border-top:1px solid var(--line)}.vl li b,.dl li b{color:var(--fg);font-weight:500}
+.role{display:flex;justify-content:space-between;align-items:center;gap:14px}.role h4{font:500 22px var(--d);color:var(--fg)}.role span{font:12px var(--m);color:var(--faint)}
+.stl{display:flex;justify-content:space-between;align-items:center;color:var(--fg)}.stl small{font:12px var(--m);color:var(--faint)}.dotg{display:inline-block;width:8px;height:8px;border-radius:50%;background:#7fcf9a;margin-right:12px;box-shadow:0 0 10px #7fcf9a}
+.ub{display:flex;gap:2px;margin:6px 0 24px}.ub i{flex:1;height:28px;border-radius:2px;background:rgba(127,207,154,.55)}.ub i.d{background:rgba(201,180,138,.55)}
+.dl{margin:10px 0 0 18px}.dl li{padding:6px 0}.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:26px}.mini div{padding:18px;border:1px solid var(--line);border-radius:16px}.mini b{display:block;font:italic 400 34px var(--d);color:var(--gl)}.mini span{font-size:13px;color:var(--mut)}
+html.noscroll,html.noscroll body{overflow:hidden}
+.err{color:#e9a3a3;font-size:13px;line-height:1.5}.err:empty{display:none}.hp{position:absolute!important;left:-9999px;opacity:0;height:0;width:0}
+@media(max-width:960px){.pers{grid-template-columns:1fr}}
+@media(max-width:620px){.ovp{padding:34px 22px}.cmpr{grid-template-columns:1fr 1fr;padding:16px 18px;font-size:13px}.cmpr b{grid-column:1/-1}.cmpr.h span:first-child{display:none}.mini{grid-template-columns:1fr}.role{align-items:flex-start;flex-direction:column}}
+.lite body::before,.lite .gc:after,.lite .gl:before{display:none}
+.lite .gc:before{opacity:1;background:linear-gradient(180deg,rgba(255,255,255,.09),transparent 42%)}
+.lite .gc,.lite .gl,.lite .orb{-webkit-backdrop-filter:none;backdrop-filter:none}
+.lite .gc{background:linear-gradient(145deg,rgba(255,255,255,.1),rgba(255,255,255,.025) 55%,rgba(255,255,255,.06)),rgba(12,12,14,.5);box-shadow:var(--hi),0 12px 28px -16px #000}
+.lite .ft{box-shadow:var(--hi),0 0 40px -18px rgba(201,180,138,.45)}
+.lite .gc:hover{translate:none}
+.lite .nav,.lite .mp{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}.lite header.sc .nav{background:linear-gradient(145deg,rgba(24,24,27,.62),rgba(255,255,255,.03))}.lite .mp{background:rgba(14,14,17,.78)}
+.lite .gl{background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.04));box-shadow:inset 0 1px 1px rgba(255,255,255,.45),inset 0 -10px 18px rgba(255,255,255,.04),0 10px 22px -12px #000}
+.lite .gl.gold{background:linear-gradient(145deg,rgba(239,227,198,.55),rgba(201,180,138,.24));color:#fffaf0;box-shadow:inset 0 1px 1px rgba(255,255,255,.6),inset 0 -10px 18px rgba(201,180,138,.12),0 10px 28px -12px rgba(201,180,138,.55)}
+.lite .gl:hover{translate:none}
+.lite .orb{box-shadow:inset -8px -10px 18px rgba(0,0,0,.4),inset 6px 8px 14px rgba(255,255,255,.14)}
+.lite .hxb{-webkit-mask:none;mask:none;filter:none;opacity:.3}.lite .mq{-webkit-mask:none;mask:none}
+.lite .shiny{animation:none;background-position:50% 0}.lite .scr i{animation:none}
+.lite .bl{opacity:0;filter:blur(9px);transform:translateY(34px) scale(.98);transition:opacity .8s var(--ease),filter .8s var(--ease),transform .8s var(--ease)}.lite .bl.in{opacity:1;filter:none;transform:none}
+.lite .hc{transition:opacity .7s var(--ease),filter .7s var(--ease),transform .7s var(--ease)}.lite .hc.gone{opacity:0;filter:blur(9px);transform:translateY(-34px) scale(.98)}
+.lite #how{min-height:0;display:block;padding:100px 0}.lite .trk{width:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));padding:0 20px}.lite .stp{width:auto}.lite .hp{display:none}
+@media(prefers-reduced-motion:reduce){.shiny{animation:none}.amb,.scr i{display:none}.lite .bl,.lite .hc{transition:none}}
+</style>
+</head>
+<body>
+<div class="pl" id="pl"><div class="pm"><div class="pt">Helix</div><div class="pb"><i></i></div><span id="pn">000</span></div></div>
+<div class="prog"></div><div class="cd"></div><div class="cr"></div>
+<div class="amb" aria-hidden="true"><i></i><i></i><i></i></div>
+<header id="hd"><div class="nav gc">
+<a href="#hero" class="logo"><svg viewBox="0 0 24 24" fill="none"><path d="M5 3c0 0 14 4 14 9s-14 9-14 9" stroke-width="1.6" stroke-linecap="round"/><path d="M19 3c0 0-14 4-14 9s14 9 14 9" stroke-width="1.6" stroke-linecap="round"/></svg>Helix AI</a>
+<nav class="links"><a href="#capabilities">Capabilities</a><a href="#demo">Demo</a><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a></nav>
+<div class="cta"><a href="#" data-p="signin" class="gl sm navauth"><span>Sign in</span></a><a href="#pricing" class="gl gold sm mag"><span>Start free</span></a><button class="tog" id="tog" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button></div>
+</div></header>
+<div class="mp gc" id="mp"><a href="#capabilities">Capabilities</a><a href="#demo">Demo</a><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><a href="#" data-p="signin" class="gl navauth"><span>Sign in</span></a><a href="#pricing" class="gl gold"><span>Start free</span></a></div>
+<main>
+<section id="hero">
+<div class="hxb"><svg id="hx" viewBox="0 0 380 480" aria-hidden="true"></svg></div>
+<div id="fls"></div>
+<div class="wrap hc" id="hc">
+<p class="eyebrow"><span class="shiny">Your personal AI assistant</span></p>
+<h1 id="h1"><span class="l">Write it. Code it. Generate it.</span><span class="l it">And whatever comes next.</span></h1>
+<p class="lead">Helix AI is one assistant that moves fluidly across every discipline — writing, code, image and video generation, model runs, automation, and whatever you throw at it next — without losing the thread between them.</p>
+<div class="acts"><a href="#pricing" class="gl gold mag"><span>Start free <i class="ar">→</i></span></a><a href="#demo" class="gl mag"><span>Watch it work <i class="ar">↓</i></span></a></div>
+<p class="note">Free to start. No credit card required.</p>
+<div class="chr" id="chr"></div>
+</div>
+<div class="scr"><span>Scroll</span><i></i></div>
+</section>
+<div class="band" aria-hidden="true"><div class="bt" id="bt"></div></div>
+
+<section id="capabilities" class="pad"><div class="wrap">
+<div class="head bl"><p class="eyebrow">Every strand, no limit</p><h2>Everything a professional-grade AI tool does — woven into one thread</h2><p>Helix AI isn't a handful of tools stitched together. It's one model that routes across every discipline — writing, code, visuals, models, automation, and whatever's next — sharing a single memory the whole way through.</p></div>
+<div class="bento" id="cg"></div>
+</div></section>
+
+<section id="demo" class="pad"><div class="wrap">
+<div class="head bl"><p class="eyebrow">See it work</p><h2>One thread, endless directions</h2><p>Switch strands to see how the same conversation adapts to what you ask of it.</p></div>
+<div class="dm"><div class="seg gc bl" id="tabs" role="tablist"><i class="th" id="th"></i></div><div class="win gc bl" id="win"></div></div>
+</div></section>
+
+<section id="showcase" class="pad"><div class="wrap">
+<div class="head bl"><p class="eyebrow">Built for how you work</p><h2>One assistant, three ways of working</h2><p>The same thread adapts to whatever you're making — here's what a typical request looks like for different kinds of work.</p></div>
+<div class="pers" id="pers"></div>
+</div></section>
+
+<section id="how"><div class="wrap"><div class="head nb"><p class="eyebrow">Getting started</p><h2>Four steps, one thread</h2></div></div>
+<div class="trk" id="trk"></div><div class="hp"><i></i></div></section>
+
+<section class="pad"><div class="wrap"><div class="stats">
+<div class="gc stc bl"><div class="sn" data-to="inf">∞</div><p class="sl">disciplines Helix can pick up — no cap</p><div class="orb" style="width:70px;height:70px;right:24px;top:22px;opacity:.8" data-s=".5"></div></div>
+<div class="gc stc bl"><div class="sn" data-to="1">0</div><p class="sl">shared memory across every strand</p><div class="orb c" style="width:46px;height:46px;right:40px;bottom:30px" data-s="-.4"></div></div>
+<div class="gc stc bl"><div class="sn" data-from="9" data-to="0">9</div><p class="sl">tabs to switch between while you work</p><div class="orb" style="width:60px;height:60px;right:26px;top:34px;opacity:.8" data-s=".7"></div></div>
+</div></div></section>
+
+<section id="compare" class="pad"><div class="wrap">
+<div class="head bl"><p class="eyebrow">The difference</p><h2>One thread vs. a dozen tabs</h2><p>What changes when writing, code, visuals, models and automation all share the same memory.</p></div>
+<div class="gc cmp bl" id="cmp"></div>
+</div></section>
+
+<section id="testimonials" class="pad" style="padding-top:20px"><div class="wrap"><div class="head bl"><p class="eyebrow">From the thread</p><h2>What changes when it's one assistant</h2></div></div>
+<div class="mq"><div class="mt" id="mt"></div></div></section>
+
+<section id="pricing" class="pad"><div class="orb" style="width:240px;height:240px;left:-90px;top:12%" data-s=".6"></div><div class="orb c" style="width:150px;height:150px;right:-30px;top:48%" data-s="-.5"></div><div class="wrap">
+<div class="head bl"><p class="eyebrow">Pricing</p><h2>Start free. Stay for as long as it helps.</h2></div>
+<div class="ptog"><span class="on" id="lm">Monthly</span><button class="sw" id="sw" role="switch" aria-checked="false" aria-label="Toggle annual billing"></button><span id="la">Annual</span><span class="badge">save ~17%</span></div>
+<div class="pg" id="pg"></div>
+</div></section>
+
+<section id="faq" class="pad"><div class="wrap">
+<div class="head bl"><p class="eyebrow">Questions</p><h2>Good to know</h2></div>
+<div class="fqs" id="fq"></div>
+</div></section>
+
+<section class="fin"><div class="wrap"><div class="gc panel bl">
+<div class="orb" style="width:120px;height:120px;left:40px;top:34px" data-s=".4"></div><div class="orb c" style="width:76px;height:76px;right:60px;bottom:50px" data-s="-.6"></div>
+<h2 id="fh">Start the thread.</h2><p>Free to start, four disciplines deep, one memory the whole way through.</p><a href="#pricing" class="gl gold mag"><span>Start free <i class="ar">→</i></span></a>
+</div></div></section>
+</main>
+<footer><div class="wrap">
+<div class="ft1"><div><a href="#hero" class="logo"><svg viewBox="0 0 24 24" fill="none"><path d="M5 3c0 0 14 4 14 9s-14 9-14 9" stroke-width="1.6" stroke-linecap="round"/><path d="M19 3c0 0-14 4-14 9s14 9 14 9" stroke-width="1.6" stroke-linecap="round"/></svg>Helix AI</a><p style="margin-top:14px">Your personal AI assistant.</p></div>
+<div><h4>Product</h4><a href="#capabilities">Capabilities</a><a href="#demo">Demo</a><a href="#pricing">Pricing</a></div>
+<div><h4>Company</h4><a href="#" data-p="about">About</a><a href="#" data-p="careers">Careers</a><a href="#" data-p="contact">Contact</a></div>
+<div><h4>Resources</h4><a href="#faq">FAQ</a><a href="#" data-p="docs">Docs</a><a href="#" data-p="status">Status</a></div></div>
+<div class="mega" aria-hidden="true">Helix</div>
+<div class="fb"><p>© <span id="yr"></span> Helix AI. All rights reserved.</p></div>
+</div></footer>
+
+<div class="ov" id="ov" aria-hidden="true"><div class="ovb" id="ovb" data-lenis-prevent><div class="gc ovp" role="dialog" aria-modal="true"><button class="x" id="ovx" aria-label="Close">×</button><div id="ovc"></div></div></div></div>
+<script>
+/* ===== HELIX CONFIG — paste your Supabase values here (see SETUP.md) =====
+   Leave both empty to run in demo mode (forms confirm but nothing is saved).
+   The anon key is PUBLIC by design. NEVER paste the "service_role" key here. */
+window.HELIX_CONFIG={SUPABASE_URL:"https://xkqoazzkjrvttjwigrva.supabase.co",SUPABASE_ANON_KEY:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrcW9henpranJ2dHRqd2lncnZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3MDIxNDgsImV4cCI6MjEwNzI3ODE0OH0.kxlg3_Hhj4rBEVE7QKjMlEvvbhXOLh3n8iIrloH5dkQ"};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
+<script>
+(function(){
+var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
+var RM=matchMedia('(prefers-reduced-motion:reduce)').matches,G=window.gsap,ST=window.ScrollTrigger,ok=!!G&&!!ST,FX=ok&&!RM,LITE=document.documentElement.classList.contains('lite');
+if(ok){G.registerPlugin(ST);ST.config({ignoreMobileResize:true})}
+$('#yr').textContent=new Date().getFullYear();
+
+/* ---------- Content ---------- */
+var IC={write:'<path d="M4 20l3.5-1 11-11a2 2 0 0 0-3-3L4.5 16.5 3.5 20z" stroke-linejoin="round"/>',code:'<path d="M9 6L3 12l6 6M15 6l6 6-6 6" stroke-linejoin="round" stroke-linecap="round"/>',image:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5.5-5.5L7 19" stroke-linecap="round" stroke-linejoin="round"/>',video:'<rect x="3" y="6" width="12" height="12" rx="2"/><path d="M15 10l6-3v10l-6-3" stroke-linejoin="round"/>',model:'<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" stroke-linecap="round"/>',script:'<path d="M5 3v18M19 3v18M8 8h8M8 13h5" stroke-linecap="round"/>'};
+var CAPS=[['write','Write','Draft, edit, and polish long-form docs, emails, and briefs that sound like you — revised in place instead of regenerated from scratch.','c4'],['code','Code','Ship full files and multi-file changes, with real project context — not just isolated snippets that need stitching together.','c2'],['image','Image','Generate, edit, and resize visuals — hero shots, social crops, product renders — in the same thread as the brief that inspired them.','c2'],['video','Video','Turn a script or a rough cut into a finished edit, captions and all, without opening a separate timeline.','c2'],['model','Model','Kick off training runs, track experiments, and read the results back in plain language instead of raw logs.','c2'],['script','Script','Turn a described task into a working automation — scheduled and monitored without ever leaving the thread.','c3']];
+var DEMO={write:['Turn these bullet points into a client-ready update:',[['','"Quick update: the migration wrapped two days ahead of schedule, and error rates have kept dropping since last sprint. Next up is the EU rollout — we\'ll share a firm date by Friday."']]],
+code:['Write a function that retries a flaky API call with backoff.',[['','def call_with_backoff(fn, retries=4, base_delay=0.5):\n  for attempt in range(retries):\n    try:\n      return fn()\n    except RequestError:\n      if attempt == retries - 1:\n        raise\n      time.sleep(base_delay * (2 ** attempt))']]],
+image:['Generate a clean hero image for the launch — minimal, high contrast.',[['','rendering · style: minimal / high-contrast · 4 variations'],['','variation 2 selected · 2048×1152 · exported as PNG'],['hl','Helix: Image is ready — want a matching set for social crops (1:1, 9:16)?']]],
+video:['Turn this update into a 30-second recap video with captions.',[['','assembling · script: 6 beats · voice: neutral, paced'],['','render queued · 1080p · captions burned in'],['','render complete · 0:31 · export ready'],['hl','Helix: Recap video\'s ready — want a vertical cut for social too?']]],
+model:['Fine-tune on the support-ticket dataset and tell me when it\'s ready.',[['','run started · dataset: support-tickets-v3 (18,204 rows)'],['','epoch 1/3 · loss 0.842 → 0.611'],['','epoch 2/3 · loss 0.611 → 0.398'],['','epoch 3/3 · loss 0.398 → 0.276'],['hl','eval accuracy: 91.4% · run complete in 14m'],['hl','Helix: Fine-tune finished — accuracy is up 6 points over the last run. Ready to deploy to staging?']]],
+script:['Every Monday, pull last week\'s tickets and email me a summary.',[['','schedule set · trigger: every Monday, 07:00'],['','step 1 · fetch tickets (last 7 days) — 214 found'],['','step 2 · summarize by category'],['','step 3 · send email → you@company.com'],['hl','Helix: saved as \'weekly-ticket-summary\'. First run is Monday at 7:00.']]]};
+var HOW=[['Connect your context','Point Helix at your docs, repo, or dataset. It reads the room before you ask anything.'],['Ask in plain language','Describe the outcome, not the syntax. Helix works out which discipline to route to.'],['Watch it route','Helix pulls in writing, code, visuals, models, or scripts as needed — sometimes several in one reply.'],['Review and ship','Every output is editable in place. Approve, adjust, or ask it to go again.']];
+var TS=[['Helix is the first assistant that remembers what I asked yesterday when I come back today.','R. Adeyemi','Product Lead, Northlane'],['I stopped keeping a separate tab open for code. It just stays in the same thread as the spec.','J. Torres','Senior Engineer, Fielding Labs'],['The scripting strand alone paid for the subscription in the first week.','M. Okafor','Operations Manager, Voss & Reed']];
+var PL=[['Starter','For getting the thread started.','$0',null,['Write & code strands','20 requests / day','Community support'],'Start free','',0],['Professional','For daily, all-discipline work.',19.99,199.99,['Every strand unlocked — image & video included','Unlimited requests','Model run scheduling','Priority support'],'Start Professional','gold',1],['Ultra','For power users running every strand, all day.',59.99,599.99,['Everything in Professional','Higher rate limits & faster runs','Priority model queue','Early access to new strands'],'Start Ultra','',0],['Team','For teams sharing one thread.','Custom',null,['Everything in Professional','Shared workspaces & memory','Admin controls & audit log','Dedicated onboarding'],'Talk to us','',0]];
+var FQ=[['Is Helix AI one model, or a bundle of separate tools?','One model, routed across every discipline. Writing, code, image and video generation, model runs, and scripts all share the same memory of your conversation instead of living in separate tools.'],['Can it actually run and train models, or just talk about them?','Helix kicks off real runs, tracks their progress, and reports results back in plain language — you don\'t have to leave the thread to check a separate dashboard.'],['What can the scripting strand automate?','Anything you can describe as a repeatable task — pulling data on a schedule, summarizing it, and sending it where it needs to go.'],['Is my data used to train the model?','No. Your conversations and files stay yours by default and are not used to train Helix\'s underlying models.'],['Can I cancel anytime?','Yes — downgrade to Starter or cancel from your account at any time, no forms to fill out.']];
+
+/* ---------- Render ---------- */
+var chipSvg=function(k){return '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">'+IC[k]+'</svg>'};
+$('#cg').innerHTML=CAPS.map(function(c,i){return '<div class="gc bc bl '+c[3]+'" id="cap-'+c[0]+'"><div class="ct"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.3" aria-hidden="true">'+IC[c[0]]+'</svg></div><span>0'+(i+1)+'</span></div><div><h3>'+c[1]+'</h3><p>'+c[2]+'</p></div>'+(i==0?'<div class="orb" style="width:110px;height:110px;right:70px;top:-26px" data-s=".5"></div>':'')+(i==3?'<div class="orb c" style="width:56px;height:56px;right:30px;bottom:26px" data-s="-.5"></div>':'')+'</div>'}).join('')+'<div class="gc bc bl c3 dash"><div class="ct"><div class="ic"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" style="stroke:none"><circle cx="4" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="20" cy="12" r="1.8"/></svg></div></div><div><h3>…and beyond</h3><p>Data analysis, voice, translation, research, design systems — if it\'s a discipline a professional-grade AI tool should cover, Helix picks it up. The list keeps growing. The thread never resets.</p></div></div>';
+$('#tabs').insertAdjacentHTML('beforeend',CAPS.map(function(c,i){return '<button class="tab'+(i?'':' on')+'" data-k="'+c[0]+'" role="tab"><span>0'+(i+1)+'</span>'+c[1]+'</button>'}).join(''));
+$('#win').innerHTML=CAPS.map(function(c,i){var d=DEMO[c[0]];return '<div class="pane'+(i?'':' on')+'" data-k="'+c[0]+'"><p class="pr"><b>›</b><span class="tt"></span></p><div class="out">'+d[1].map(function(l){return '<span class="ln '+l[0]+'">'+l[1].replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</span>'}).join('')+'</div></div>'}).join('');
+$('#trk').innerHTML=HOW.map(function(h,i){return '<div class="gc stp"><span class="n">0'+(i+1)+'</span><div><h3>'+h[0]+'</h3><p>'+h[1]+'</p></div></div>'}).join('');
+var card=function(t){return '<div class="gc tc"><q>"'+t[0]+'"</q><p><strong>'+t[1]+'</strong> — '+t[2]+'</p></div>'};
+$('#mt').innerHTML=TS.concat(TS).concat(TS).concat(TS).map(card).join('');
+var money=function(v){return typeof v=='number'?'$'+v.toFixed(2):v};
+$('#pg').innerHTML=PL.map(function(p,i){return '<div class="gc pc bl'+(p[7]?' ft':'')+'">'+(p[7]?'<span class="tag">MOST POPULAR</span>':'')+'<h3>'+p[0]+'</h3><p class="pd">'+p[1]+'</p><div class="pa"><span data-i="'+i+'">'+money(p[2])+'</span>'+(typeof p[2]=='number'||p[2]=='$0'?'<small>/ month</small>':'')+'</div><ul class="pf">'+p[4].map(function(f){return '<li>✓ '+f+'</li>'}).join('')+'</ul><a href="#" data-p="'+(i==3?'contact':'signup')+'" data-plan="'+p[0]+'" data-sub="'+(i==3?'Team plan':'')+'" class="gl '+p[6]+' blk"><span>'+p[5]+'</span></a></div>'}).join('');
+$('#fq').innerHTML=FQ.map(function(f){return '<div class="fq gc bl"><button aria-expanded="false"><span>'+f[0]+'</span><span class="pl">+</span></button><div class="fa"><p>'+f[1]+'</p></div></div>'}).join('');
+var PE=[['Founders','Launch week, handled.','Draft the launch post, cut a hero image, and schedule the recap video.',['write','image','video'],'Post, hero image and recap video — one thread'],['Engineers','From spec to shipped.','Turn the spec into code, fine-tune on last month\'s tickets, and set up the Monday summary.',['code','model','script'],'Code, a trained model and an automation — one thread'],['Creators','Idea to final cut.','Outline the series, generate the key art, and edit episode one with captions.',['write','image','video'],'Outline, art and a captioned edit — one thread']];
+var cn={};CAPS.forEach(function(c){cn[c[0]]=c[1]});
+$('#pers').innerHTML=PE.map(function(p){return '<div class="gc pcd bl"><p class="pk">'+p[0]+'</p><h3>'+p[1]+'</h3><p class="pq">"'+p[2]+'"</p><div class="flow">'+p[3].map(function(k){return '<div class="chip gc" data-t="cap-'+k+'" tabindex="0" role="button">'+chipSvg(k)+'<span>'+cn[k]+'</span></div>'}).join('<i>→</i>')+'</div><p class="rs">'+p[4]+'</p></div>'}).join('');
+var CMP=[['Memory across tasks','One shared thread','Re-explain every time'],['Writing, code, image, video','All in one place','Four or more subscriptions'],['Model runs & automation','Started from chat','Separate dashboards'],['Editing outputs','Revised in place','Regenerate from scratch'],['Switching between tools','Never','Tabs, exports, copy-paste'],['Getting started','Free, no card','Set up each tool']];
+$('#cmp').innerHTML='<div class="cmpr h"><span></span><span>Helix AI</span><span>Separate tools</span></div>'+CMP.map(function(r){return '<div class="cmpr"><b>'+r[0]+'</b><span><em class="y">✓</em>'+r[1]+'</span><span><em class="n">✕</em>'+r[2]+'</span></div>'}).join('');
+/* floating hero pieces */
+var FP=[[17,21,.5],[76,17,.7],[9,62,.9],[84,60,.6],[24,80,.8],[66,82,.45]];
+var FC=[['left:3%;top:30%',.4,'<div class="dots"><i></i><i></i><i></i></div><pre>def call_with_backoff(fn):\n  for n in range(4):\n    try: return fn()\n    except RequestError:\n      sleep(.5 * 2**n)</pre>'],['right:3%;top:34%',.55,'<b>Render complete</b>recap.mp4 · 0:31 · 1080p<div class="bar"><i></i></div>'],['left:3.5%;top:73%',.7,'<b>weekly-ticket-summary</b>saved · every Monday, 07:00'],['right:4%;top:73%',.35,'<span>eval accuracy</span><div class="big">91.4%</div>▲ 6 pts over last run']];
+$('#fls').innerHTML=CAPS.map(function(c,i){var p=FP[i];return '<div class="fl" data-d="'+p[2]+'" style="left:'+p[0]+'%;top:'+p[1]+'%"><div class="fi chip gc" data-t="cap-'+c[0]+'" tabindex="0" role="button">'+chipSvg(c[0])+'<span>'+c[1]+'</span></div></div>'}).join('')+FC.map(function(f){return '<div class="fl" data-d="'+f[1]+'" style="'+f[0]+'"><div class="fi fc gc">'+f[2]+'</div></div>'}).join('');
+$('#chr').innerHTML=CAPS.map(function(c){return '<div class="chip gc" data-t="cap-'+c[0]+'">'+chipSvg(c[0])+'<span>'+c[1]+'</span></div>'}).join('');
+if(!LITE)$$('.gc').forEach(function(c){c.addEventListener('pointermove',function(e){var b=c.getBoundingClientRect();c.style.setProperty('--x',e.clientX-b.left+'px');c.style.setProperty('--y',e.clientY-b.top+'px')})});
+if(!LITE)$$('.gl').forEach(function(c){c.addEventListener('pointermove',function(e){var b=c.getBoundingClientRect();c.style.setProperty('--mx',e.clientX-b.left+'px');c.style.setProperty('--my',e.clientY-b.top+'px')})});
+
+/* ---------- Lenis + nav ---------- */
+var lenis=null;
+if(!RM&&!LITE&&window.Lenis){
+  lenis=new Lenis({duration:1.3,easing:function(t){return Math.min(1,1.001-Math.pow(2,-10*t))}});
+  if(ok){lenis.on('scroll',ST.update);G.ticker.add(function(t){lenis.raf(t*1000)});G.ticker.lagSmoothing(0)}
+  else{(function r(t){lenis.raf(t);requestAnimationFrame(r)})(0)}
+}
+function goTo(t,off){if(lenis)lenis.scrollTo(t,{offset:off||-80});else t.scrollIntoView({behavior:RM?'auto':'smooth',block:t.matches('section')?'start':'center'})}
+$$('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var h=a.getAttribute('href');if(h.length<2)return;var t=$(h);if(!t)return;e.preventDefault();$('#mp').classList.remove('open');goTo(t,-20)})});
+document.addEventListener('click',function(e){var c=e.target.closest('[data-t]');if(c)goTo($('#'+c.dataset.t),-140)});
+var hd=$('#hd');addEventListener('scroll',function(){hd.classList.toggle('sc',scrollY>20)},{passive:true});
+$('#tog').addEventListener('click',function(){var o=$('#mp').classList.toggle('open');this.setAttribute('aria-expanded',o)});
+if(ok&&!LITE)$$('.links a').forEach(function(a){var s=$(a.getAttribute('href'));if(s)ST.create({trigger:s,start:'top 50%',end:'bottom 50%',onToggle:function(x){a.classList.toggle('on',x.isActive)}})});
+
+/* ---------- Preloader ---------- */
+var pl=$('#pl'),D=LITE?1.55:2.35;
+if(FX){
+  if(lenis)lenis.stop();var pc={v:0},pn=$('#pn');
+  G.timeline().to(pc,{v:100,duration:LITE?1:1.5,ease:'power2.inOut',onUpdate:function(){pn.textContent=String(Math.round(pc.v)).padStart(3,'0')}})
+   .to('.pb i',{scaleX:1,duration:LITE?1:1.5,ease:'power2.inOut'},0).from('.pt',{opacity:0,y:24,duration:.9,ease:'power3.out'},0)
+   .to('.pm',{opacity:0,y:-20,duration:.5,ease:'power2.in'},LITE?1.05:1.6)
+   .to(pl,{yPercent:-100,duration:1.1,ease:'expo.inOut',onComplete:function(){pl.style.display='none';if(lenis)lenis.start()}},LITE?1.2:1.9);
+}else pl.style.display='none';
+
+/* ---------- Helix backdrop ---------- */
+var NS='http://www.w3.org/2000/svg',svg=$('#hx');
+function el(n,a){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);svg.appendChild(e);return e}
+var CX=190,AMP=88,STEPS=LITE?30:50,SP=470/STEPS,A=[],B=[],R=[];
+for(var i=0;i<=STEPS;i++)if(i%3==0)R.push([i,el('line',{stroke:'#c9b48a','stroke-width':1,opacity:.3})]);
+for(i=0;i<=STEPS;i++){var cy=12+i*SP;A.push(el('circle',{fill:'#e6d6b0',cy:cy}));B.push(el('circle',{fill:'#f5f5f2',cy:cy}));if(i%3==0){R[i/3][1].setAttribute('y1',cy);R[i/3][1].setAttribute('y2',cy)}}
+var ph=0,run=true;
+function draw(){for(var i=0;i<=STEPS;i++){var a=i*(3.2*6.2832/STEPS)+ph,b=a+Math.PI,xa=CX+AMP*Math.sin(a),xb=CX+AMP*Math.sin(b),da=Math.cos(a),db=Math.cos(b);
+  A[i].setAttribute('cx',xa);A[i].setAttribute('r',(2+da*1.4).toFixed(2));A[i].setAttribute('opacity',(.35+(da+1)/2*.65).toFixed(2));
+  B[i].setAttribute('cx',xb);B[i].setAttribute('r',(2+db*1.4).toFixed(2));B[i].setAttribute('opacity',(.35+(db+1)/2*.65).toFixed(2));
+  if(i%3==0){var r=R[i/3][1];r.setAttribute('x1',xa);r.setAttribute('x2',xb)}}}
+draw();
+var fr=0;if(FX){G.ticker.add(function(){if(!run)return;if(LITE&&(fr++&1))return;ph+=LITE?.014:.007;draw()});ST.create({trigger:'#hero',start:'top bottom',end:'bottom top',onToggle:function(s){run=s.isActive}})}
+
+/* ---------- Hero: text, floaters, parallax ---------- */
+function split(node){$$('.l',node).forEach(function(l){l.innerHTML=l.textContent.split(' ').map(function(w){return '<span class="w"><i>'+w+'</i></span>'}).join(' ')});return $$('.w i',node)}
+var wi=split($('#h1'));
+if(FX){
+  G.from(wi,{yPercent:110,rotate:4,duration:1.1,ease:'expo.out',stagger:.045,delay:D});
+  G.from('.hc .eyebrow,.lead,.acts,.note',{opacity:0,y:24,duration:1,ease:'power3.out',stagger:.1,delay:D+.35});
+  if(!LITE){G.from('.fl',{scale:.5,opacity:0,duration:1.3,ease:'back.out(1.5)',stagger:.08,delay:D+.45});
+  $$('.fi').forEach(function(f){G.to(f,{y:'random(-14,14)',x:'random(-9,9)',rotation:'random(-2.5,2.5)',duration:'random(3,5)',ease:'sine.inOut',repeat:-1,yoyo:true,repeatRefresh:true})});
+  var fq=$$('.fl').map(function(f){return [G.quickTo(f,'x',{duration:1,ease:'power3'}),G.quickTo(f,'y',{duration:1,ease:'power3'}),+f.dataset.d]});
+  $('#hero').addEventListener('pointermove',function(e){var nx=e.clientX/innerWidth-.5,ny=e.clientY/innerHeight-.5;fq.forEach(function(q){q[0](-nx*90*q[2]);q[1](-ny*70*q[2])})});
+  G.to('#fls',{y:-140,ease:'none',scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:.6}});
+  G.to('.hxb',{y:90,ease:'none',scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:.6}});}
+}
+
+/* ---------- Band, progress, cursor ---------- */
+var bt=$('#bt'),nm=CAPS.map(function(c){return c[1]}).join('<em>\u2726</em>')+'<em>\u2726</em>';bt.innerHTML=nm+nm+nm+nm;
+if(FX){
+  var btw=G.to(bt,{xPercent:-50,duration:55,ease:'none',repeat:-1});
+  if(!LITE)ST.create({onUpdate:function(s){var v=Math.min(Math.abs(s.getVelocity())/300,5);G.to(btw,{timeScale:(s.direction||1)*(1+v),duration:.5,overwrite:true})}});
+  ST.create({start:0,end:'max',onUpdate:function(s){G.set('.prog',{scaleX:s.progress})}});
+  var mt=$('#mt'),mw=G.to(mt,{x:function(){return -mt.scrollWidth/4},duration:40,ease:'none',repeat:-1});
+  if(!LITE)ST.create({onUpdate:function(s){var v=Math.min(Math.abs(s.getVelocity())/280,6);G.to(mw,{timeScale:1+v,duration:.3,overwrite:true,onComplete:function(){G.to(mw,{timeScale:1,duration:1.2})}})}});
+  if(!LITE&&matchMedia('(pointer:fine)').matches){
+    document.body.classList.add('cc');
+    var cd=$('.cd'),cr=$('.cr'),cdx=G.quickTo(cd,'x',{duration:.12}),cdy=G.quickTo(cd,'y',{duration:.12}),crx=G.quickTo(cr,'x',{duration:.5,ease:'power3'}),cry=G.quickTo(cr,'y',{duration:.5,ease:'power3'}),seen=false;
+    G.set([cd,cr],{opacity:0});
+    addEventListener('pointermove',function(e){cdx(e.clientX);cdy(e.clientY);crx(e.clientX);cry(e.clientY);if(!seen){seen=true;G.to([cd,cr],{opacity:1,duration:.4})}},{passive:true});
+    document.addEventListener('pointerover',function(e){var h=e.target.closest('a,button,.chip,.tab,.sw'),c=!h&&e.target.closest('.gc');
+      G.to(cr,{scale:h?1.9:c?1.3:1,backgroundColor:h?'rgba(201,180,138,.12)':'rgba(201,180,138,0)',duration:.35,ease:'power3'})});
+  }
+  /* magnet + tilt */
+  if(!LITE)$$('.mag').forEach(function(m){var x=G.quickTo(m,'x',{duration:.5,ease:'power3'}),y=G.quickTo(m,'y',{duration:.5,ease:'power3'});
+    m.addEventListener('mousemove',function(e){var b=m.getBoundingClientRect();x((e.clientX-b.left-b.width/2)*.25);y((e.clientY-b.top-b.height/2)*.35)});
+    m.addEventListener('mouseleave',function(){x(0);y(0)})});
+  if(!LITE)$$('.bc,.pc,.stc,.stp,.pcd').forEach(function(c){var rx=G.quickTo(c,'rotationX',{duration:.6,ease:'power3'}),ry=G.quickTo(c,'rotationY',{duration:.6,ease:'power3'});G.set(c,{transformPerspective:1000});
+    c.addEventListener('pointermove',function(e){if(e.pointerType!='mouse')return;var b=c.getBoundingClientRect();ry(((e.clientX-b.left)/b.width-.5)*7);rx(-((e.clientY-b.top)/b.height-.5)*7)});
+    c.addEventListener('pointerleave',function(){rx(0);ry(0)})});
+  /* floating orbs: scroll parallax + idle drift */
+  if(!LITE)$$('.orb').forEach(function(o,i){var s=+o.dataset.s||.4;
+    G.to(o,{y:-s*220,ease:'none',scrollTrigger:{trigger:o.parentElement,start:'top bottom',end:'bottom top',scrub:true}});
+    G.to(o,{xPercent:i%2?-14:14,yPercent:i%3?-12:12,rotation:i%2?8:-8,duration:6+i%4*1.5,yoyo:true,repeat:-1,ease:'sine.inOut'})});
+  if(!LITE)$$('.amb i').forEach(function(o,i){
+    G.to(o,{x:(i%2?-1:1)*200,y:(i+1)*240,ease:'none',scrollTrigger:{trigger:document.body,start:'top top',end:'bottom bottom',scrub:1.5}});
+    G.to(o,{xPercent:i%2?-18:18,yPercent:-14,duration:9+i*3,yoyo:true,repeat:-1,ease:'sine.inOut'})});
+  G.from('.mega',{yPercent:35,opacity:0,duration:1.6,ease:'expo.out',scrollTrigger:{trigger:'.mega',start:'top 98%',once:true}});
+  var fh=$('#fh');fh.innerHTML='<span class="l">'+fh.textContent+'</span>';var fi=split(fh);
+  G.from(fi,{yPercent:110,duration:1,ease:'expo.out',stagger:.08,scrollTrigger:{trigger:fh,start:'top 88%'}});
+}
+
+/* ---------- Horizontal steps (pin) — before blur triggers ---------- */
+if(FX&&!LITE){
+  var tr=$('#trk'),mm=G.matchMedia();
+  mm.add('(min-width:901px)',function(){
+    G.to(tr,{x:function(){return -(tr.scrollWidth-innerWidth+40)},ease:'none',scrollTrigger:{trigger:'#how',start:'top top',end:function(){return '+='+(tr.scrollWidth-innerWidth+40)},pin:true,scrub:.6,invalidateOnRefresh:true,refreshPriority:1,onUpdate:function(s){G.set('.hp i',{scaleX:s.progress})}}});
+  });
+}
+
+/* ---------- Scroll blur in/out ---------- */
+if(FX&&!LITE){
+  var BL=innerWidth<700?7:14,B='blur('+BL+'px)';
+  $$('.bl').forEach(function(e,i){
+    var last=e.matches('.panel');
+    G.fromTo(e,{filter:B,opacity:0,y:50+(i%3)*18,scale:.96},{filter:'blur(0px)',opacity:1,y:0,scale:1,ease:'power2.out',scrollTrigger:{trigger:e,start:'top 100%',end:'top 70%',scrub:.5}});
+    if(!last)G.fromTo(e,{filter:'blur(0px)',opacity:1,y:0,scale:1},{filter:B,opacity:0,y:-50,scale:.97,ease:'power2.in',immediateRender:false,scrollTrigger:{trigger:e,start:'bottom 32%',end:'bottom 0%',scrub:.5}});
+  });
+  G.to('#hc',{filter:B,opacity:0,y:-80,scale:.97,ease:'none',scrollTrigger:{trigger:'#hero',start:'top -120',end:'bottom 25%',scrub:.5}});
+}else if(LITE){var io=new IntersectionObserver(function(es){es.forEach(function(e){e.target.classList.toggle('in',e.isIntersecting)})},{rootMargin:'-16% 0px -6% 0px',threshold:.06});$$('.bl').forEach(function(e){io.observe(e)});new IntersectionObserver(function(es){es.forEach(function(e){$('#hc').classList.toggle('gone',e.intersectionRatio<.3)})},{threshold:[0,.3]}).observe($('#hero'))}
+
+/* ---------- Stats count-up ---------- */
+$$('.sn').forEach(function(n){var to=n.dataset.to;if(to=='inf')return;var f=+(n.dataset.from||0),t=+to,o={v:f};
+  n.textContent=f;if(!FX){n.textContent=t;return}
+  ST.create({trigger:n,start:'top 85%',once:true,onEnter:function(){G.to(o,{v:t,duration:1.6,ease:'power2.out',onUpdate:function(){n.textContent=Math.round(o.v)}})}})});
+
+/* ---------- Demo: sliding glass tab + typing ---------- */
+var th=$('#th');
+function mv(b,now){if(!b)return;if(ok)G.to(th,{x:b.offsetLeft,y:b.offsetTop,width:b.offsetWidth,height:b.offsetHeight,duration:now||RM?0:.6,ease:'expo.out'});else{th.style.cssText+=';left:'+b.offsetLeft+'px;top:'+b.offsetTop+'px;width:'+b.offsetWidth+'px;height:'+b.offsetHeight+'px'}}
+var tim=[];
+function play(p){tim.forEach(clearTimeout);tim=[];var d=DEMO[p.dataset.k],tt=$('.tt',p),ls=$$('.ln',p),i=0;
+  ls.forEach(function(l){l.style.opacity=0});tt.textContent='';
+  if(!FX){tt.textContent=d[0];ls.forEach(function(l){l.style.opacity=1});return}
+  (function tick(){if(i<=d[0].length){tt.textContent=d[0].slice(0,i++);var c=document.createElement('span');c.className='cur';tt.appendChild(c);tim.push(setTimeout(tick,14))}
+  else{tt.lastChild.remove();G.to(ls,{opacity:1,duration:.5,stagger:.22,ease:'power2.out',delay:.15})}})();
+}
+$$('.tab').forEach(function(t){t.addEventListener('click',function(){
+  $$('.tab').forEach(function(x){x.classList.toggle('on',x==t)});mv(t);
+  $$('.pane').forEach(function(p){var on=p.dataset.k==t.dataset.k;p.classList.toggle('on',on);if(on)play(p)})})});
+function sync(){mv($('.tab.on'),true)}
+sync();addEventListener('load',sync);addEventListener('resize',sync);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(sync);
+if(FX)ST.create({trigger:'#demo',start:'top 45%',once:true,onEnter:function(){play($('.pane.on'))}});else play($('.pane.on'));
+
+/* ---------- Pricing toggle ---------- */
+var an=false;$('#sw').addEventListener('click',function(){an=!an;this.setAttribute('aria-checked',an);$('#lm').classList.toggle('on',!an);$('#la').classList.toggle('on',an);
+  PL.forEach(function(p,i){if(typeof p[2]!='number')return;var s=$('[data-i="'+i+'"]'),to=an?p[3]:p[2],o={v:an?p[2]:p[3]};
+    s.nextElementSibling.textContent=an?'/ year':'/ month';
+    if(FX)G.to(o,{v:to,duration:.6,ease:'power2.out',onUpdate:function(){s.textContent='$'+o.v.toFixed(2)}});else s.textContent=money(to)})});
+
+/* ---------- FAQ ---------- */
+$$('.fq').forEach(function(q){var b=$('button',q),a=$('.fa',q);b.addEventListener('click',function(){var o=q.classList.toggle('o');b.setAttribute('aria-expanded',o);
+  if(FX)G.to(a,{height:o?'auto':0,duration:.5,ease:'power3.inOut',onComplete:ST.refresh});else a.style.height=o?'auto':0})});
+
+/* ---------- Tap ripple + haptic ---------- */
+document.addEventListener('pointerdown',function(e){var g=e.target.closest('.gl');if(!g)return;var b=g.getBoundingClientRect(),r=document.createElement('i');r.className='rp';r.style.left=e.clientX-b.left+'px';r.style.top=e.clientY-b.top+'px';g.appendChild(r);r.addEventListener('animationend',function(){r.remove()});
+  if(e.pointerType=='touch'&&navigator.vibrate){try{navigator.vibrate(8)}catch(x){}}});
+
+/* ---------- Phone tilt parallax (lite mode only; cheap transforms) ---------- */
+if(LITE&&ok&&!RM&&window.DeviceOrientationEvent){
+  var gt=$$('.orb').map(function(o){return [G.quickTo(o,'x',{duration:.9,ease:'power3'}),G.quickTo(o,'y',{duration:.9,ease:'power3'}),(+o.dataset.s||.4)*70]});
+  $$('.amb i').forEach(function(o,i){gt.push([G.quickTo(o,'x',{duration:1.2,ease:'power3'}),G.quickTo(o,'y',{duration:1.2,ease:'power3'}),-30-i*18])});
+  gt.push([G.quickTo('.hxb','x',{duration:1,ease:'power3'}),G.quickTo('.hxb','y',{duration:1,ease:'power3'}),26]);
+  var lt=0;
+  var onO=function(e){var n=performance.now();if(n-lt<33||e.gamma==null)return;lt=n;var x=Math.max(-1,Math.min(1,e.gamma/28)),y=Math.max(-1,Math.min(1,(e.beta-50)/28));gt.forEach(function(q){q[0](x*q[2]);q[1](y*q[2])})};
+  var go=function(){addEventListener('deviceorientation',onO,{passive:true})};
+  if(typeof DeviceOrientationEvent.requestPermission=='function'){document.addEventListener('click',function(){DeviceOrientationEvent.requestPermission().then(function(r){if(r=='granted')go()}).catch(function(){})},{once:true})}else go();
+}
+
+/* ---------- Auth (Supabase) ---------- */
+var CFG=window.HELIX_CONFIG||{},SB=null,USER=null;
+if(CFG.SUPABASE_URL&&CFG.SUPABASE_ANON_KEY&&window.supabase){try{SB=window.supabase.createClient(CFG.SUPABASE_URL,CFG.SUPABASE_ANON_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}})}catch(x){SB=null}}
+function esc(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function setUser(u){USER=u||null;$$('.navauth').forEach(function(a){a.dataset.p=USER?'account':'signin';$('span',a).textContent=USER?'Account':'Sign in'})}
+if(SB){SB.auth.getSession().then(function(r){setUser(r.data&&r.data.session&&r.data.session.user)});
+  SB.auth.onAuthStateChange(function(ev,sess){setUser(sess&&sess.user);if(ev=='PASSWORD_RECOVERY')setTimeout(function(){openP('reset')},0)})}
+function loadProfile(){if(!SB||!USER)return;SB.from('profiles').select('name,plan').eq('id',USER.id).maybeSingle().then(function(r){if(!r.data)return;var h=$('#ovc h2');if(h&&r.data.name)h.textContent=r.data.name;var sl=$('#ovc select');if(sl&&r.data.plan)sl.value=r.data.plan})}
+
+/* ---------- Pages (overlay) ---------- */
+var ov=$('#ov'),ovc=$('#ovc'),ovb=$('#ovb'),lastF=null;
+var NOTE='<p class="smp">Sample content for this design prototype.</p>';
+function fm(k,fields,btn){return '<form class="fm" data-k="'+k+'">'+fields+'<p class="err" role="alert"></p><button class="gl gold blk" type="submit"><span>'+btn+'</span></button></form>'}
+var PG={
+signin:function(){return '<p class="pk">Sign in</p><h2>Welcome back.</h2><p>Pick up the thread where you left it.</p>'+fm('signin','<label>Email<input type="email" name="email" required maxlength="254" autocomplete="email"></label><label>Password<input type="password" name="password" required minlength="8" maxlength="72" autocomplete="current-password"></label>','Sign in')+'<p class="alt"><a href="#" data-p="forgot">Forgot password?</a></p><p class="alt">New to Helix? <a href="#" data-p="signup">Create an account</a></p>'},
+signup:function(){return '<p class="pk">Get started</p><h2>Start the thread.</h2><p>Free to start. No credit card required.</p>'+fm('signup','<label>Name<input type="text" name="name" required maxlength="80" autocomplete="name"></label><label>Email<input type="email" name="email" required maxlength="254" autocomplete="email"></label><label>Password (8+ characters)<input type="password" name="password" required minlength="8" maxlength="72" autocomplete="new-password"></label><label>Plan<select name="plan">'+PL.map(function(p){return '<option>'+p[0]+'</option>'}).join('')+'</select></label><input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">','Create account')+'<p class="alt">Already have an account? <a href="#" data-p="signin">Sign in</a></p>'+(SB?'<p class="smp">Passwords are handled by a secure authentication service — they are never stored in plain text.</p>':'')},
+forgot:function(){return '<p class="pk">Password</p><h2>Reset your password.</h2><p>Enter your email and we\'ll send you a reset link.</p>'+fm('forgot','<label>Email<input type="email" name="email" required maxlength="254" autocomplete="email"></label>','Send reset link')+'<p class="alt"><a href="#" data-p="signin">Back to sign in</a></p>'},
+reset:function(){return '<p class="pk">Password</p><h2>Choose a new password.</h2>'+fm('reset','<label>New password (8+ characters)<input type="password" name="password" required minlength="8" maxlength="72" autocomplete="new-password"></label>','Update password')},
+account:function(){var u=USER||{},m=u.user_metadata||{};return '<p class="pk">Account</p><h2>'+esc(m.name||'Your account')+'</h2><p>'+esc(u.email||'')+'</p>'+fm('plan','<label>Plan<select name="plan">'+PL.map(function(p){return '<option>'+p[0]+'</option>'}).join('')+'</select></label>','Save plan')+'<button class="gl blk" data-so type="button" style="margin-top:14px"><span>Sign out</span></button>'},
+about:function(){return '<p class="pk">About</p><h2>One thread, every discipline.</h2><p>Helix AI started from a simple annoyance: great tools scattered across a dozen tabs, none of them remembering what you had just done in the others. We built one assistant that carries your context from the first draft to the final render.</p><h3>What we believe</h3><ul class="vl"><li><b>Continuity over novelty.</b> The best assistant is the one that still knows what you asked yesterday.</li><li><b>Every discipline, one memory.</b> Writing, code, visuals, models and automation shouldn\'t live in separate worlds.</li><li><b>Your work stays yours.</b> Conversations and files are not used to train the underlying models.</li></ul><div class="mini"><div><b>∞</b><span>disciplines, no cap</span></div><div><b>1</b><span>shared memory</span></div><div><b>0</b><span>tabs to juggle</span></div></div>'+NOTE},
+careers:function(){return '<p class="pk">Careers</p><h2>Help us build the thread.</h2><p>We\'re a small team that cares about craft. These are the kinds of roles we hire for.</p><div style="margin-top:22px">'+[['Applied ML Engineer','Remote · Full-time'],['Product Designer','Remote · Full-time'],['Developer Relations','Remote · Full-time'],['Customer Engineer','Hybrid · Full-time']].map(function(r){return '<div class="role"><div><h4>'+r[0]+'</h4><span>'+r[1]+'</span></div><a href="#" data-p="contact" data-sub="Application: '+r[0]+'" class="gl sm"><span>Apply</span></a></div>'}).join('')+'</div>'+NOTE},
+contact:function(){return '<p class="pk">Contact</p><h2>Say hello.</h2><p>Questions, partnerships, or a team plan — tell us what you need.</p>'+fm('contact','<label>Name<input type="text" name="name" required maxlength="80" autocomplete="name"></label><label>Email<input type="email" name="email" required maxlength="254" autocomplete="email"></label><label>Subject<input type="text" name="s" maxlength="120"></label><label>Message<textarea name="message" required maxlength="4000"></textarea></label><input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">','Send message')+(SB?'':NOTE)},
+docs:function(){return '<p class="pk">Docs</p><h2>Getting started with Helix.</h2><h3>Quickstart</h3><ol class="dl"><li><b>Connect your context.</b> Point Helix at your docs, repo or dataset.</li><li><b>Ask in plain language.</b> Describe the outcome, not the syntax.</li><li><b>Let it route.</b> Helix picks the right strand — sometimes several in one reply.</li><li><b>Review and ship.</b> Edit outputs in place, or ask for another pass.</li></ol><h3>The six strands</h3><ul class="vl">'+CAPS.map(function(c){return '<li><b>'+c[1]+'.</b> '+c[2]+'</li>'}).join('')+'</ul><h3>Memory</h3><p>Every strand shares one memory of your conversation, so a draft written on Monday can inform the image you generate on Friday.</p><h3>Data & privacy</h3><p>Your conversations and files stay yours by default and are not used to train Helix\'s underlying models.</p>'+NOTE},
+status:function(){var bars='';for(var i=0;i<30;i++)bars+='<i'+(i==11?' class="d"':'')+'></i>';return '<p class="pk">Status</p><h2>All systems operational.</h2><p>Live status for each strand, with the last 30 days of availability.</p><div class="ub" aria-hidden="true">'+bars+'</div>'+['Memory'].concat(CAPS.map(function(c){return c[1]})).map(function(n){return '<div class="stl"><span>'+n+'</span><span><i class="dotg"></i><small>Operational</small></span></div>'}).join('')+NOTE}
+};
+function openP(n,src,np){if(USER&&(n=='signin'||n=='signup'))n='account';if(!PG[n])return;ovc.innerHTML=PG[n]();if(n=='account')loadProfile();
+  if(n=='signup'&&src&&src.dataset&&src.dataset.plan){var sel=$('select',ovc);if(sel)sel.value=src.dataset.plan}
+  if(n=='contact'&&src&&src.dataset&&src.dataset.sub){var sj=$('[name=s]',ovc);if(sj)sj.value=src.dataset.sub}
+  ovb.scrollTop=0;ov.classList.add('open');ov.setAttribute('aria-hidden','false');document.documentElement.classList.add('noscroll');if(lenis)lenis.stop();
+  if(!lastF)lastF=document.activeElement;setTimeout(function(){$('#ovx').focus({preventScroll:true})},80);
+  if(!np){try{history.pushState(null,'','#/'+n)}catch(x){}}}
+function closeP(){if(!ov.classList.contains('open'))return;ov.classList.remove('open');ov.setAttribute('aria-hidden','true');document.documentElement.classList.remove('noscroll');if(lenis)lenis.start();
+  try{if(location.hash.indexOf('#/')==0)history.replaceState(null,'',location.pathname+location.search)}catch(x){}
+  if(lastF&&lastF.focus){lastF.focus({preventScroll:true})}lastF=null}
+document.addEventListener('click',function(e){var a=e.target.closest('[data-p]');if(a){e.preventDefault();openP(a.dataset.p,a)}});
+$('#ovx').addEventListener('click',closeP);
+ov.addEventListener('click',function(e){if(e.target===ov||e.target===ovb)closeP()});
+addEventListener('keydown',function(e){if(e.key=='Escape')closeP()});
+addEventListener('popstate',function(){var h=location.hash;if(h.indexOf('#/')==0&&PG[h.slice(2)])openP(h.slice(2),null,true);else closeP()});
+var DEMO={signin:'You\'re in.',signup:'Account created.',contact:'Message sent.',forgot:'Check your inbox.',reset:'Password updated.',plan:'Plan saved.'},lastSend=0;
+var ACT={
+signin:async function(v){var r=await SB.auth.signInWithPassword({email:v('email'),password:v('password')});if(r.error)throw r.error;return {t:'Welcome back.',m:'You\'re signed in.',close:1}},
+signup:async function(v){var r=await SB.auth.signUp({email:v('email'),password:v('password'),options:{data:{name:v('name'),plan:v('plan')},emailRedirectTo:location.origin+location.pathname}});if(r.error)throw r.error;
+  return r.data&&r.data.session?{t:'Account created.',m:'You\'re signed in.',close:1}:{t:'Check your inbox.',m:'We sent a confirmation link to '+v('email')+'. Click it to finish creating your account.'}},
+forgot:async function(v){var r=await SB.auth.resetPasswordForEmail(v('email'),{redirectTo:location.origin+location.pathname});if(r.error)throw r.error;return {t:'Check your inbox.',m:'If an account exists for that email, a reset link is on its way.'}},
+reset:async function(v){var r=await SB.auth.updateUser({password:v('password')});if(r.error)throw r.error;return {t:'Password updated.',m:'You can now sign in with your new password.',close:1}},
+plan:async function(v){var r=await SB.from('profiles').update({plan:v('plan')}).eq('id',USER.id);if(r.error)throw r.error;return {t:'Plan saved.',m:'Your plan is now '+v('plan')+'.'}},
+contact:async function(v){var r=await SB.from('messages').insert({name:v('name'),email:v('email'),subject:v('s')||null,message:v('message')});if(r.error)throw r.error;return {t:'Message sent.',m:'Thanks — we\'ll get back to you soon.'}}
+};
+function friendly(x){var m=(x&&x.message)||'';if(/fetch|network/i.test(m))return 'Couldn\'t reach the server. Check your connection and try again.';return m||'Something went wrong. Please try again.'}
+function done(f,r){f.outerHTML='<div class="okb"><p class="pk">✓ Done</p><h3>'+esc(r.t)+'</h3><p>'+esc(r.m)+'</p></div>'}
+document.addEventListener('submit',function(e){var f=e.target.closest('.fm');if(!f)return;e.preventDefault();
+  var k=f.dataset.k,v=function(n){var i=f.querySelector('[name="'+n+'"]');return i?(n=='password'?i.value:i.value.trim()):''},b=$('button[type=submit]',f),er=$('.err',f);if(er)er.textContent='';
+  if(v('website'))return done(f,{t:'Sent.',m:'Thanks.'});
+  if(!SB)return done(f,{t:DEMO[k]||'Done.',m:'This page is running in demo mode with no backend connected, so nothing was actually sent or stored.'});
+  if(k=='contact'&&Date.now()-lastSend<30000){if(er)er.textContent='Please wait a moment before sending another message.';return}
+  b.disabled=true;b.style.opacity='.6';
+  ACT[k](v).then(function(r){if(k=='contact')lastSend=Date.now();done(f,r);if(r.close)setTimeout(closeP,1400)}).catch(function(x){b.disabled=false;b.style.opacity='';if(er)er.textContent=friendly(x)});
+});
+document.addEventListener('click',function(e){if(SB&&e.target.closest('[data-so]'))SB.auth.signOut().then(closeP)});
+if(location.hash.indexOf('#/')==0&&PG[location.hash.slice(2)])openP(location.hash.slice(2),null,true);
+})();
+</script>
+</body>
+</html>
